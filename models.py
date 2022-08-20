@@ -1,8 +1,9 @@
-from app import db
+from flask_sqlalchemy import SQLAlchemy
 # ----------------------------------------------------------------------------#
 # Models.
 # ----------------------------------------------------------------------------#
 
+db = SQLAlchemy()
 
 class Venue(db.Model):
     __tablename__ = "Venue"
@@ -19,7 +20,7 @@ class Venue(db.Model):
     website_link = db.Column(db.String(120))
     seeking_talent = db.Column(db.Boolean, default=False)
     seeking_description = db.Column(db.String(120))
-    shows = db.relationship("Show", backref="venue")
+    shows = db.relationship("Show", backref="venue",lazy='joined', cascade="all, delete")
 
 
 class Artist(db.Model):
@@ -36,7 +37,7 @@ class Artist(db.Model):
     website_link = db.Column(db.String(120))
     seeking_venue = db.Column(db.Boolean, default=False)
     seeking_description = db.Column(db.String(120))
-    shows = db.relationship("Show", backref="artist")
+    shows = db.relationship("Show", backref="artist", lazy='joined', cascade="all, delete")
 
 
 class Show(db.Model):
